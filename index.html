@@ -8,8 +8,8 @@
     <meta charset="UTF-8">
   </head>
   <body>
-  	<div id="chartContainer">
-  	  <script src="js/createGenreChart.js"></script>
+      <div id="chartContainer">
+      <script src="js/createGenreChart.js"></script>
       <form class="form">
         <div class="switch-field">
         <!--   <div class="switch-title">Display Type</div> -->
@@ -19,7 +19,27 @@
           <label for="switch_right">Percents</label>
         </div>
       </form>
+      <div id= "explanation">
+  This chart visualizes the number of movies genre releases from 1915 to 2014, as either
+  their absolute counts or percentage of releases. The data is gotten from IMDB   
+  with <a href="https://github.com/andreykurenkov/data-movies">this code</a>, and then       
+  further post-processed with D3 and visualized with dimple.js. These are total counts of genre tags rather  
+  than movies, since a single movie may tagged as both a Comedy and Romance,      
+  and some filtering is done to avoid counting incredibely obscure movies by not  
+  counting movies with less than  10 IMDB user votes. The visualization conveys an
+  intentionally broad story about the relative popularity of genres and movies    
+  overall over the last 90 years, with various interesting patterns such as the   
+  rise of the documentary starting from the 60s and the decrease of the popularity
+  of action movies past the 80s.<hr>
 
+  Need to collect feedback, some questions:<br>
+  What do you notice in the visualization?<br>
+  What questions do you have about the data?<br>
+  What relationships do you notice?<br>
+  What do you think is the main takeaway from this visualization?<br>
+  Is there something you don’t understand in the graphic?<br>
+
+      </div> 
       <script>
         var form = document.querySelector("form");
         form.addEventListener("change", function(event) {
