@@ -1,7 +1,7 @@
 var genres = ["Action","Animation","Comedy","Drama","Documentary","Romance"];
 var svg = dimple.newSvg("#chartContainer", 700, 430);
 
-d3.tsv("movies.tsv", function (data) {
+d3.tsv("./data/movies.tsv", function (data) {
   //Create dimple.js-compatible data representation
   var genre_data= d3.nest()
   .key(function(d) { return parseInt(d.year);}).sortKeys(d3.ascending)//gooup by year
