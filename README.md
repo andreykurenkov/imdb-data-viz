@@ -16,6 +16,8 @@ rise of the documentary starting from the 60s and the decrease of the popularity
 of action movies pastthe 80s.  
 
 ## Design
+https://newrepublic.com/article/107212/has-hollywood-murdered-the-movies
+http://flavorwire.com/492985/how-the-death-of-mid-budget-cinema-left-a-generation-of-iconic-filmmakers-mia
 
 ## Feedback
 Need to collect feedback, some questions:

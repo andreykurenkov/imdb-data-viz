@@ -1,29 +1,21 @@
 var genres = ["Action","Animation","Comedy","Drama","Documentary","Romance"];
-var svg = dimple.newSvg("#chartContainer", 740, 430);
+var svg = dimple.newSvg("#chartContainer", 700, 430);
 
 d3.tsv("./data/movies.tsv", function (data) {
-  //Create year-aggregated data
-  var year_data= d3.nest()
-  .key(function(d) { return parseInt(d.year);}).sortKeys(d3.ascending)//group by year
+  //Create dimple.js-compatible data representation
+  var genre_data= d3.nest()
+  .key(function(d) { return parseInt(d.year);}).sortKeys(d3.ascending)//gooup by year
   .rollup(function(d) { return genres.reduce(//rollup sums of genre per year
-    function(store,genre){//create dictionary with count and each genre for each year
+    function(store,genre){
       store[genre] = d3.sum(d, function(line) {
         return line[genre];
       });
       return store;
-    },{'count':d.length});
+    },{});
   })
   .entries(data)//compute from .tsv data
-  .filter(function(entry){return entry['key']>=1915 && entry['key']<2014;});//filter out certain year ranges
-
-  //Compute number of movies per year
-  var count_data = year_data.map(function(entry){
-      return {'Year':entry.key,
-              'Count':entry.values['count']};
-    });
-
-  //Compute flattened genre representations per year
-  var genre_data = year_data.map(function(entry){//Trasform into flattened representation for dimple.js
+  .filter(function(entry){return entry['key']>=1915 && entry['key']<2014;})//filter out certain year ranges
+  .map(function(entry){//Trabsfirn into flattened representation for dimple.js
     return genres.map(function(genre){
       return {'Year':entry.key,
               'Genre':genre,
@@ -36,11 +28,9 @@ d3.tsv("./data/movies.tsv", function (data) {
 
 //Debugging log
 console.log(genre_data);
-console.log(count_data);
 window.genre_data = genre_data;
-window.count_data = count_data;
 //Create dimple chart
-var chart = new dimple.chart(svg);
+var chart = new dimple.chart(svg, genre_data);
 window.chart = chart;//Make global for display toggling
 chart.setBounds(60, 50, 525, 325);
 
@@ -51,21 +41,13 @@ x_axis.tickFormat = "%Y";
 window.x_axis = x_axis;
 var y_axis = chart.addMeasureAxis("y", "Count");
 window.y_axis = y_axis;//Make global for display toggling
-var genreSeries = chart.addSeries("Genre", dimple.plot.area, [x_axis, y_axis]);
-genreSeries.data = genre_data;
-genreSeries.interpolation = "cardinal";
-
-var c_axis = chart.addColorAxis(null, "black");
-var countSeries = chart.addSeries(null, dimple.plot.line, [x_axis, y_axis, c_axis]);
-countSeries.data = count_data;
-countSeries.interpolation = "cardinal";
-countSeries.lineWeight = 5;
-
-window.countSeries = countSeries;//Make global for display toggling
+var series = chart.addSeries("Genre", dimple.plot.area);
+series.interpolation = "cardinal";
 
 //Add legend
-var legend = chart.addLegend(605, 100, 100, 200, "Right");
-legend.verticalPadding = 15;
+var legend = chart.addLegend(600, 100, 100, 200, "Right");
+legend.verticalPadding = 20;
+
 
 //Reverse legend listing to match chart order
 legend._getEntries_old = legend._getEntries;
@@ -73,15 +55,7 @@ legend._getEntries = function()
 {
 // but call the original version,
 // then sort the returned array before returning it.
-  entries = legend._getEntries_old.apply(this, arguments).reverse();
-  if(window.displayingCounts){
-    entries[0].stroke = '#405869';
-    entries[0].fill = '#405869';
-    entries[0].key = 'Total Movies';
-  } else{
-    entries.remove(0);
-  }
-  return entries;
+  return legend._getEntries_old.apply(this, arguments).reverse();
 }
 /*var story = chart.setStoryboard("Decade");
 story.addOrderRule("Year");*/
@@ -92,7 +66,7 @@ svg.selectAll("title_text")
   .data(["Legend"])
   .enter()
   .append("text")
-    .attr("x", 625)
+    .attr("x", 610)
     .attr("y", 115)
     .style("font-family", "sans-serif")
     .style("font-size", "10px")
@@ -115,10 +89,8 @@ function toggleChartDisplay(){
   window.y_axis.showPercent = window.displayingCounts;
   if(window.displayingCounts){
     window.y_axis.title = "Counts";
-    window.countSeries.data = [];
   }else{
     window.y_axis.title = "Percent";
-    window.countSeries.data = window.count_data;
   }
   window.displayingCounts = !window.displayingCounts;
   window.chart.draw(4000);
