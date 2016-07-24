@@ -1,41 +1,12 @@
 #chartContainer {
-  width: 700px;
-  height: 450px;
+  width: 85%;
+  height: 55%;
+  margin: auto;
+  width: 50%;
+  padding: 10px;
 }
 
 /*Setup look of toggle button*/
-input[type="radio"].toggle {
-    display: none;
-    margin: auto;
-    background-image: linear-gradient(to top,#969696,#727272);
-}
-
-input[type="radio"].toggle:checked + label {
-  background-image: linear-gradient(to top,#969696,#727272);
-  cursor: default;
-  color: #E6E6E6;
-  text-shadow: 0 1px 1px rgba(40, 40, 40, 0.75);
-}
-
-input[type="radio"].toggle:checked + label.btn:hover {
-  background-color: inherit;
-  background-position: 0 0;
-  transition: none;
-}
-
-input[type="radio"].toggle-left + label {
-  border-right: 0;
-  border-top-right-radius: 0;
-  border-bottom-right-radius: 0;
-}
-
-input[type="radio"].toggle-right + label {
-  border-top-left-radius: 0;
-  border-bottom-left-radius: 0;
-  box-shadow: inset 0 1px 6px rgba(41, 41, 41, 0.2),
-                    0 1px 2px rgba(0, 0, 0, 0.05);
-}
-
 .switch-field {
   overflow: hidden;
   width: inherit;
