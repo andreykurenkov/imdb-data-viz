@@ -1,20 +1,21 @@
 # imdb-data-viz
-Playing with movie data and D3
+Playing with movie data and D3. The data is gotten from IMDB with [this code](https://github.com/andreykurenkov/data-movies),
+and then further post-processed with [D3](https://d3js.org/) and visualized with
+[dimple.js](http://dimplejs.org/).
+
+## To Run
+Execute 'python -m SimpleHTTPServer' in root directory, and navigate to 'http://localhost:8000/index3.html'
+to see chart, or index2.html or index1.html for previous versions.
 
 ## Summary
-This chart visualizes the number of genre movie releases between 1915 to 2014, as either
+This chart visualizes the number of genre movie releases between 1915 and 2013, as either
 their absolute counts or percentage of releases, as well as the total number of movies in those years.
-The data is gotten from IMDB with [this code](https://github.com/andreykurenkov/data-movies), and then
-further post-processed with [D3](https://d3js.org/) and visualized with
-[dimple.js](http://dimplejs.org/). The total number of genre movie releases may not be equal to
-the number of movie releases, since a single movie may tagged with multiple genres or no genre
-(for instance a movie can be both a Comedy and Romance), and the data does not include
-incredibly obscure movies almost no one ever sees by filtering out movies with less than 10 IMDB votes.
-The clear conclusion from this visualization is that there has been an explosion on film
+The clear conclusion from this visualization is that there has been an explosion in film
 production from the 90s onward, and beyond that there are a multitude of possible smaller
-conclusions regarding the relative popularity of genres and movies overall over the last 90 years
-with various interesting patterns such as the rise of the documentary starting from the 60s and
-the decrease of the popularity of action movies past the 80s.  
+conclusions regarding the relative popularity of genres and movies overall.  
+The total number of genre movie releases may not be equal to the number of movie releases,
+since a single movie may be tagged with multiple genres or no genre (for instance a movie can be both a Comedy and Romance),
+and the data does not include incredibly obscure movies almost no one ever sees by filtering out movies with less than 10 IMDB votes.
 
 ## Design
 My original inspiration to work with movie data came from [an article](
@@ -39,19 +40,26 @@ people. The most significant critical feedback was that the stacked quality of t
 chart made it difficult to compare the popularities of genres, and that it was not
 obvious how many movies were produced in a given year since I visualized number of
 genre tags without including a movie count. To address these concerns, I added a second
-series to the chart to show the number of actual movie releases per year and made
+series ('Total Movies') to the chart to show the number of actual movie releases per year and made
 the legend interactive so that different elements could be enabled or disabled. Drawing
 the total number of movies as a line on top of the stacked area chart made a lot of sense
 and worked well, and using the legend to add the interactive element likewise worked well.
 
+The second set of iterations came after the first set of review comments on Udacity.
+I agreed with most of these criticisms and so addressed them - it is clarified in the
+code and text why 1915 and 2013 are chosen as cutoff years, the legend title is changed and
+interactive components are explained in the text, the 'Total Movies' legend entry
+dissapears entirely in percentage view, and the tick mark text is lessened. I could not
+recolor the 'Total Movies' line to entirely black, but increased the size of it and felt
+it is clear enough.
+
 The feedback also helped me clarify the 'main conclusion' from the visualization,
 which is that there has been a huge rise in the number of overall movies being made
-since the 90s. Although I could revise the visualization to make it primarily focus
-on that aspect of the data, I very much like how different people are able to find
-additional interesting findings from the data (eg the dip in movie production during WW2,
-the increasing number of documentaries being produced, how more comedy growing in volume,
-and more), so I want to keep this as a more open-ended visualization with a big finding
-(that the number of movies being produced since the 90s has seemingly risen by a lot,
+since the 90s. I very much like that this aspect of the data is obvious, and yet with
+further exploration different people are able to find additional interesting findings from
+the data such as the dip in movie production during WW2, the increasing number of documentaries
+being produced, how more comedy growing in volume, and more. Therefore this is a more open-ended
+visualization with a big finding (that the number of movies being produced since the 90s has seemingly risen by a lot,
 according to IMDB data) as well as many more smaller findings for the user to find
 through exploration and interaction.
 

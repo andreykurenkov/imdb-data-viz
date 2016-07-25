@@ -43,7 +43,7 @@ console.log(count_data);
 
 //Create dimple chart
 var chart = new dimple.chart(svg);
-chart.setMargins("8%", "12%", "15%", "12%");
+chart.setMargins("8%", "10%", "12%", "10%");
 
 //Make x axis
 var x_axis = chart.addTimeAxis("x", "Year");
@@ -69,8 +69,8 @@ countSeries.interpolation = "cardinal";
 countSeries.lineWeight = 5;
 
 //Add legend to the right using negative values
-var legend = chart.addLegend("-8%", "25%", "10%", "40%", "Right");
-legend.verticalPadding = 10;
+var legend = chart.addLegend("-10%", "25%", "10%", "40%", "Right");
+legend.verticalPadding = 15;
 //Reverse legend listing to match chart order
 legend._getEntries_old = legend._getEntries;
 legend._getEntries = function()
@@ -98,10 +98,10 @@ svg.selectAll("title_text")
   .data(["Interactive Legend"])
   .enter()
   .append("text")
-    .attr("x", "86.5%")
+    .attr("x", "89%")
     .attr("y", "27%")
     .style("font-family", "sans-serif")
-    .style("font-size", "11px")
+    .style("font-size", "12px")
     .style("color", "Black")
     .text(function (d) { return d; });
 

@@ -1,0 +1,40 @@
+<html>
+  <head>
+    <link rel="stylesheet" href="css/style3.css">
+	  <!-- Bootstrap for some additional components (toggle swtich) -->
+	  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+    <script src="http://d3js.org/d3.v3.min.js"></script>
+    <script src="http://dimplejs.org/dist/dimple.v2.1.6.min.js"></script>
+    <meta charset="UTF-8">
+  </head>
+  <body>
+    <div id="chartContainer">
+      <form class="form" id="toggleForm">
+        <div class="switch-field">
+        <!--   <div class="switch-title">Display Type</div> -->
+          <input type="radio" id="switch_left" name="switch" value="yes" checked/>
+          <label for="switch_left">Counts</label>
+          <input type="radio" id="switch_right" name="switch" value="no" />
+          <label for="switch_right">Percents</label>
+        </div>
+      </form>
+
+      <script src="js/createGenreChart3.js"></script>
+      <div id= "explanation">
+        <!--   Part of summary here as recommended in review -->
+        This chart visualizes the number of genre movie releases between 1915 and 2013, as either
+        their absolute counts or percentage of releases, as well as the total number of movies in those years.
+        The clear conclusion from this visualization is that there has been an explosion in film
+        production from the 90s onward, and beyond that there are a multitude of possible smaller
+        conclusions regarding the relative popularity of genres and movies overall.
+        <br><br>
+        Based on data from IMDB collected with <a href="https://github.com/andreykurenkov/data-movies">this code</a>.
+        A single movie may be associated with zero, one, or multiple genres. The 'Total Movies' line corresponds to actual
+        movie counts, and every colored-in area represents the number of movies tagged with that genre for that year.
+        The legend is interactive, so both the 'Total Movies' and genre rectangles can be clicked to toggle display
+        of that data. The cutoff years are chosen due to there being very few movies comparable to modern films prior
+        to 1915, and the data seemingly being incomplete post 2013.
+      </div>
+    </div>
+  </body>
+</html>
