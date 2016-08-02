@@ -1,8 +1,7 @@
-#chartContainer {
-  width: 85%;
-  height: 55%;
+#genreChartContainer {
   margin: auto;
-  width: 50%;
+  width: 80%;
+  height: 85%;
   padding: 10px;
 }
 

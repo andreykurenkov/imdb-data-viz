@@ -1,6 +1,6 @@
 var genres = ["Action","Animation","Comedy","Drama","Documentary","Romance"];
 //Insert SVG before the toggle switch, make it fill container
-var svg = d3.select("#chartContainer")
+var svg = d3.select("#genreChartContainer")
             .insert("svg",":first-child")
             .attr("width", "100%")
             .attr("height", "100%");
@@ -12,39 +12,28 @@ guarantee is not due to flawed data. At first I included the dip but received fe
 is best to remove it to avoid confusion, and then removed it.*/
 var end_year = 2013;
 //Get from localhost, perhaps change to github later
-var data_source = "http://localhost:8000/data/movies.tsv";
+var data_source = "http://localhost:8000/data/yearly_data.tsv";
 var chart_title = "Movie Releases Between 1915 And 2013";
 var legend_title = "Legend";
 
-d3.tsv(data_source, function (data) {
-  //Create year-aggregated data
-  var year_data= d3.nest()
-    .key(function(d) { return parseInt(d.year);}).sortKeys(d3.ascending)//group by year
-    .rollup(function(d) { return genres.reduce(//rollup sums of genre per year
-      function(store,genre){//create dictionary with count and each genre for each year
-        store[genre] = d3.sum(d, function(line) {
-          return line[genre];
-        });
-        return store;
-      },{'count':d.length});
-    })
-    //compute from .tsv data
-    .entries(data)
-    //filter out certain year ranges; explain at top
-    .filter(function(entry){return entry['key']>=start_year && entry['key']<=end_year;});
+d3.tsv(data_source, function (year_data) {
+  console.log(year_data)
+  //filter out certain year ranges; explain at top
+  year_data = year_data.filter(function(entry){return entry.year>=start_year 
+                                                      && entry.year<=end_year;});
 
   //Compute number of movies per year
   var count_data = year_data.map(function(entry){
-    return {'Year':entry.key,
-            'Count':entry.values['count']};
+    return {'Year':entry.year,
+            'Count':entry.count};
   });
 
   //Compute flattened genre representations per year
   var genre_data = year_data.map(function(entry){//Trasform into flattened representation for dimple.js
     return genres.map(function(genre){
-      return {'Year':entry.key,
+      return {'Year':entry.year,
               'Genre':genre,
-              'Count':entry.values[genre]};
+              'Count':entry[genre]};
       });
     })
   .reduce(function(all_data,year_data){//Concat seperate list into a single list
@@ -84,8 +73,8 @@ d3.tsv(data_source, function (data) {
   countSeries.lineWeight = 6;
 
   //Add legend to the right using negative values
-  var legend = chart.addLegend("-12%", "25%", "10%", "40%", "Right");
-  legend.verticalPadding = 10;
+  var legend = chart.addLegend("-16%", "25%", "10%", "50%", "Right");
+  legend.verticalPadding = 20;
   //Reverse legend listing to match chart order
   legend._getEntries_old = legend._getEntries;
   legend._getEntries = function()
@@ -117,8 +106,8 @@ d3.tsv(data_source, function (data) {
     .data([legend_title])
     .enter()
     .append("text")
-      .attr("x", "89%")
-      .attr("y", "29%")
+      .attr("x", "88%")
+      .attr("y", "25%")
       .style("font-family", "sans-serif")
       .style("color", "Black")
       .text(function (d) { return d; });
