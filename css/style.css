@@ -1,8 +1,13 @@
-#genreChartContainer {
+.chartContainer {
   margin: auto;
   width: 80%;
-  height: 85%;
+  height: 400px;
   padding: 10px;
+}
+
+.exposition {
+  margin: auto;
+  width: 60%;
 }
 
 /*Setup look of toggle button*/
