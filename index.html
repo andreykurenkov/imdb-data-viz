@@ -5,6 +5,7 @@
 	  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
     <script src="http://d3js.org/d3.v3.min.js"></script>
     <script src="http://dimplejs.org/dist/dimple.v2.1.6.min.js"></script>
+    <script src="js/createChartFuncs.js"></script>
     <meta charset="UTF-8">
   </head>
   <body>
@@ -40,17 +41,39 @@
       </div>
 
     <div id="ratingChartContainer" class="chartContainer">
-      <script src="js/createRatingChart.js"></script>
+      <script type="text/javascript">
+        createLineChart("#ratingChartContainer",
+                        "http://localhost:8000/data/rating_data.tsv",
+                        "IMDB Recent Movie Average Rating Distribution",
+                        "rating");
+      </script>
     </div>
 
     <div id="lengthChartContainer" class="chartContainer">
-      <script src="js/createLengthChart.js"></script>
+      <script type="text/javascript">
+        createBinChart("#lengthChartContainer",
+                        "http://localhost:8000/data/length_data.tsv",
+                        "IMDB Recent Movie Length Distribution",
+                        "length",false,true,false);
+      </script>
     </div>
 
     <div id="votesChartContainer" class="chartContainer">
-      <script src="js/createVotesChart.js"></script>
+      <script type="text/javascript">
+        createBinChart("#votesChartContainer",
+                        "http://localhost:8000/data/votes_data.tsv",
+                        "IMDB Recent Movie Vote # Distribution",
+                        "votes",true,true,false);
+      </script>
     </div>
 
-
+    <div id="budgetChartContainer" class="chartContainer">
+      <script type="text/javascript">
+        createBinChart("#budgetChartContainer",
+                        "http://localhost:8000/data/budget_data.tsv",
+                        "IMDB Recent Movie Budget Distribution",
+                        "budget",true,true,true);
+      </script>
+    </div>
   </body>
 </html>

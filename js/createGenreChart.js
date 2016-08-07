@@ -97,7 +97,7 @@ d3.tsv(data_source, function (year_data) {
    .attr("y", "5%")
    .style("text-anchor", "middle")
    .style("font-family", "sans-serif")
-   .text(length_chart_title);
+   .text(genre_chart_title);
 
   //Add title to legend
   genre_svg.selectAll("title_text")

@@ -38,8 +38,9 @@ length_data = create_binned_data(recent_length_data,'length',num_bins=179)
 length_data.to_csv('length_data.tsv',sep='\t',
                    index_label='length',header=['count'])
 
-recent_budget_data = remove_outliers(recent_data,'budget')
-budget_data = create_binned_data(recent_budget_data,'budget')
+recent_budget_data = recent_data['budget'].dropna()
+recent_budget_data = np.log10(recent_budget_data).replace([np.inf, -np.inf], np.nan).dropna()
+budget_data = create_binned_data(recent_budget_data,'budget',num_bins=150)
 budget_data.to_csv('budget_data.tsv',sep='\t',
                    index_label='budget',header=['count'])
 
