@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html>
   <head>
     <link rel="stylesheet" href="css/style.css">
@@ -5,12 +6,35 @@
 	  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
     <script src="http://d3js.org/d3.v3.min.js"></script>
     <script src="http://dimplejs.org/dist/dimple.v2.1.6.min.js"></script>
+	  <!-- for range bar
+    <link rel="stylesheet" type="text/css" media="all" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/themes/base/jquery-ui.css">
+    <link rel="stylesheet" type="text/css" media="all" href="http://fonts.googleapis.com/css?family=Acme">
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>-->
     <script src="js/createChartFuncs.js"></script>
     <meta charset="UTF-8">
   </head>
   <body>
+    <h1 align="center">IMDB D3 (Dimple.js) Visualizations<h1>
+    <h4 align="center">By <a href="http://www.andreykurenkov.com">Andrey Kurenkov</a> (hi!)</h4>
     <div id="genreChartContainer" class="chartContainer">
-      <script src="js/createGenreChart.js"></script>
+      <script type="text/javascript">
+        /*Start on 1915 because prior too few movies are listed to make them a fair
+        comparison to modern times*/
+        var start_year = 1915;
+        /*End on 2013 due to a strange dive towards zero in 2014 and 2015 I cannot explain or
+        guarantee is not due to flawed data. At first I included the dip but received feedback it
+        is best to remove it to avoid confusion, and then removed it.*/
+        var end_year = 2013;
+        //Get from localhost, perhaps change to github later
+        var data_source = "http://localhost:8000/data/yearly_data.tsv";
+        var name = "IMDB Yearly Movie And Genre Counts (1915-2013)";
+        createGenreChart("#genreChartContainer",
+                        data_source,
+                        name,
+                        start_year,
+                        end_year);
+      </script>
     </div>
 
     <form class="form" id="genreToggleForm">
@@ -23,57 +47,159 @@
       </div>
     </form>
 
-    <div id= "explanation" class="exposition">
+    <div class="exposition">
         <!--   Part of summary here as recommended in review -->
-        This chart visualizes the number of genre movie releases between 1915 and 2013, as either
-        their absolute counts or percentage of releases, as well as the total number of movies in those years.
-        The clear conclusion from this visualization is that there has been an explosion in film
-        production from the 90s onward, and beyond that there are a multitude of possible smaller
-        conclusions regarding the relative popularity of genres and movies overall.
+And there it is! IMDB data collected with <a href="https://github.com/andreykurenkov/data-movies">this code</a>, visualized with <a href="https://d3js.org/">D3</a>, or more precisely with the D3-powered <a href="http://dimplejs.org/">Dimple.js</a>(http://dimplejs.org/). The data is minimally cleaned up by filtering for movies that have at least one vote and associated length information, and info on TV episodes or shows is also not included, but the data is otherwise directly (after parsing) from IMDB. The legend is interactive (try clicking the rectangles!).
         <br><br>
-        Based on data from IMDB collected with <a href="https://github.com/andreykurenkov/data-movies">this code</a>.
-        A single movie may be associated with zero, one, or multiple genres. The 'Total Movies' line corresponds to actual
-        movie counts, and every colored-in area represents the number of movies tagged with that genre for that year.
-        The legend is interactive, so both the 'Total Movies' and genre rectangles can be clicked to toggle display
-        of that data. The cutoff years are chosen due to there being very few movies comparable to modern films prior
-        to 1915, and the data seemingly being incomplete post 2013.
+As you can see this chart visualizes the number of genre movie releases between 1915 and 2013, as well as the total number of movies in those years. 
+A single movie may be associated with zero, one, or multiple genres and so the 'Total Movies' line corresponds to actual
+movie counts and every colored-in area represents the number of movies tagged with that genre for that year. 
+The clear conclusion is that there has been an explosion in film production from the 90s onward, for which I have some theories but no definitive explanation. Beyond the big takeaway there are a multitude of possible smaller conclusions regarding the relative popularity of genres and movies overall, which was really my intent in making such an open-ended visualization.
         <br><br>
       </div>
+
+    <div class="exposition">
+There is a ton more that can be done with the data. The direction I decided to
+go with it was to explore various aspects of more recent data rather than
+more aspects related to change over time. I would love to eventually add controls to view any year range for all the following charts, but they still reveal some interesting aspects about modern movie production and IMDB metrics. <br><br>
+An obvious place to start is with looking at how rating data is distributed, and the answer is delightfully normal:
+    </div>
 
     <div id="ratingChartContainer" class="chartContainer">
       <script type="text/javascript">
         createLineChart("#ratingChartContainer",
                         "http://localhost:8000/data/rating_data.tsv",
-                        "IMDB Recent Movie Average Rating Distribution",
-                        "rating");
+                        false,
+                        "IMDB Average Movie Rating Distribution (2003-2013) ",
+                        "rating",
+                        false,
+                        "Average IMDB User Rating");
       </script>
+
+          <!--
+          <div id="rangedval">
+        	Range Value: <span id="rangeval">1915 - 2013</span>
+          </div>
+
+          <div id="rangeslider"></div>
+
+            <script type="text/javascript">
+            $('#rangeslider').slider({
+               range: true,
+               min: 1915,
+               max: 2013,
+               values: [ 1915, 2013],
+              slide: function( event, ui ) {
+                  if ( ui.values[ 0 ] >= ui.values[ 1 ] ) {
+                      return false;
+                  } else {
+                    $('#rangeval').html(ui.values[0]+" - "+ui.values[1]);
+                  }
+              }
+             });
+            </script>-->
+    </div>
+
+    <div class="exposition">
+Yep, a bell curve-ish kinda shape! Not overly suprising to see that most movies are rated as mediocre/good and the frequency flattens out at either extreme. Next, a slightly more fun shape from the length distribution:
     </div>
 
     <div id="lengthChartContainer" class="chartContainer">
       <script type="text/javascript">
-        createBinChart("#lengthChartContainer",
+        createLineChart("#lengthChartContainer",
                         "http://localhost:8000/data/length_data.tsv",
-                        "IMDB Recent Movie Length Distribution",
-                        "length",false,true,false);
+                        true,
+                        "IMDB Movie Length Distribution (2003-2013)",
+                        "length",
+                        false,
+                        "Length (minutes)",
+                        "max");
       </script>
+    </div>
+
+    <div class="exposition">
+Ah, what a nice regularly spiky shape. It's logical that most movies hit the 90-minute mark, though it seems likely
+that simplified data entry also brings about the periodicity here. The chart is a bit of a mess as a line graph, so it makes sense
+to clean it up by binning the data quite a bit more:
+    </div>
+
+    <div id="lengthBinChartContainer" class="chartContainer">
+      <script type="text/javascript">
+        createHistChart("#lengthBinChartContainer",
+                        "http://localhost:8000/data/length_data_hist.tsv",
+                        true,
+                        "IMDB Movie Length Distribution (2003-2013) ",
+                        "length",
+                        false,
+                        "Length (minutes)");
+      </script>
+    </div>
+
+    <div class="exposition">
+And there it is, hiding in that data was another sort-of bell curve. Except of course for that first bar - IMDB apparently has a large amount of shorter 0-20 minute film entries as well. No doubt short films are part of this, though it's unclear why there are quite so many. As with many aspects of the data, it could be explored more deeply and filtered more thouroughly to focus on a specific subset of films. But, that's for another day. For now I continued my visualization quest by looking into the vote distribution:
     </div>
 
     <div id="votesChartContainer" class="chartContainer">
       <script type="text/javascript">
-        createBinChart("#votesChartContainer",
+        createLineChart("#votesChartContainer",
                         "http://localhost:8000/data/votes_data.tsv",
-                        "IMDB Recent Movie Vote # Distribution",
-                        "votes",true,true,false);
+                        true,
+                        "IMDB Movie Vote Count Distribution (2003-2013) ",
+                        "votes",
+                        true,
+                        "IMDB User Vote Count");
       </script>
+    </div>
+
+    <div class="exposition">
+Yes astute reader, that is indeed a log-scale on the x axis. Unsurprisingly, the number of votes for any given film declines exponentially - very few of those thousands of movies in the first graph are blockbusters[^again]. As with the histogram above the continuous data is in fact binned for counting, but in this case there are enough bins that it makes sense to smooth out into a line. Once again the data can also be shown via a histogram with fewer bins:
+
+    </div>
+
+    <div id="votesBinChartContainer" class="chartContainer">
+      <script type="text/javascript">
+      createHistChart("#votesBinChartContainer",
+                      "http://localhost:8000/data/votes_data_hist.tsv",
+                      true,
+                      "IMDB Movie Vote # Distribution (2003-2013) ",
+                      "votes",
+                      true,
+                      "IMDB User Vote Count");
+      </script>
+    </div>
+
+    <div class="exposition">
+Lastly, I explored the distribution of budgets within the data. I was originally inspired to look into movie data based on an article that discussed the death of mid-budget-cinema, and of course I wanted to look into the data and see the phenomenon myself. The result once again demands a log-scale and reveals a certain periodicity:
     </div>
 
     <div id="budgetChartContainer" class="chartContainer">
       <script type="text/javascript">
-        createBinChart("#budgetChartContainer",
+        createLineChart("#budgetChartContainer",
                         "http://localhost:8000/data/budget_data.tsv",
-                        "IMDB Recent Movie Budget Distribution",
-                        "budget",true,true,true);
+                        true,
+                        "IMDB Movie Budget Distribution (2003-2013) ",
+                        "budget",
+                        true,
+                        "Budget (USD)",
+                        "average");
       </script>
     </div>
+
+    <div class="exposition">
+The data does not seem to back the notion of mid-budget movies dying, since one peak is at about 1m, but then again as said before the data is not particularly carefully filtered. There being a ton of less-than one million budget movies certainly explains how such an explosion in movie production might have been possible in the past twenty years. That guess shall hopefully be further explored in future posts, but for now I will finish with a final simplified histogram:
+    </div>
+
+    <div id="budgetBinChartContainer" class="chartContainer">
+      <script type="text/javascript">
+        createHistChart("#budgetBinChartContainer",
+                        "http://localhost:8000/data/budget_data_hist.tsv",
+                        true,
+                        "IMDB Movie Budget Distribution (2003-2013) ",
+                        "budget",
+                        true,
+                        "Budget (USD)");
+      </script>
+    </div>
+
   </body>
 </html>
